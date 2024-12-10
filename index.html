@@ -52,6 +52,10 @@
             font-size: 20x;
             padding: 8px 4px;
         }
+        td.split {
+            padding: 12px 4px;
+            background-color: #EEE;
+        }
         p {
             font-size: 13px;
         }
@@ -79,12 +83,15 @@
     </div>
     <script>
         loadData();
-        function loadData() {
-            fetch('https://api.hyeonjs.com/subway?region=jre&line=1001')
-                .then((response) => response.json())
-                .then((data) => {
-                    createMap(data);
-                });
+        async function loadData() {
+            var data = await fetch('https://api.hyeonjs.com/subway?region=jre&line=1001').then((response) => response.json());
+            var src = createMap(data);
+            
+            src += '<tr><td colspan=5 class=split>▲ JR 동일본 관할 / JR 도카이 관할 ▼</td></tr>';
+            data = await fetch('https://api.hyeonjs.com/subway?region=jrc&line=1001').then((response) => response.json());
+            src += createMap(data);     
+
+            document.getElementById("subway_map").innerHTML = src;
         }
 
         function createMap(data) {
@@ -94,15 +101,15 @@
             }
             var src = '';
             data.data.forEach((e, i) => {
-                src += '<tr onclick=\'showTrains('+JSON.stringify(e)+');\'1>';
+                src += '<tr onclick=\'showTrains('+JSON.stringify(e)+');\'>';
                 src += '<td width="20%">' + train(e.up, 'up') + '</td>';
                 src += '<td width="5%">▲</td>';
                 src += '<td width="50%">' + e.stn.replace(' (', '<br>(') + '</td>';
                 src += '<td width="5%">▼</td>';
-                src += '<td width="20%">' + train(e.dn, 'dn') + '</td>'
+                src += '<td width="20%">' + train(e.dn, 'dn') + '</td>';
                 src += '</tr>';
             });
-            document.getElementById("subway_map").innerHTML = src;
+            return src;
         }
 
         function showTrains(data) {
