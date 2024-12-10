@@ -89,7 +89,11 @@
             
             src += '<tr><td colspan=5 class=split>▲ JR 동일본 관할 / JR 도카이 관할 ▼</td></tr>';
             data = await fetch('https://api.hyeonjs.com/subway?region=jrc&line=1001').then((response) => response.json());
-            src += createMap(data);     
+            src += createMap(data);
+
+            src += '<tr><td colspan=5 class=split>▲ JR 도카이 관할 / JR 서일본 관할 ▼</td></tr>';
+            data = await fetch('https://api.hyeonjs.com/subway?region=jrw&line=1001').then((response) => response.json());
+            src += createMap(data);
 
             document.getElementById("subway_map").innerHTML = src;
         }
