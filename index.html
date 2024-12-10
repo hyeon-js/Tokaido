@@ -84,16 +84,20 @@
     <script>
         loadData();
         async function loadData() {
-            var data = await fetch('https://api.hyeonjs.com/subway?region=jre&line=1001').then((response) => response.json());
-            var src = createMap(data);
+            var src = '<tr><td colspan=5 class=split>▲ JR 동일본 도호쿠 본선</td></tr>';
             
-            src += '<tr><td colspan=5 class=split>▲ JR 동일본 관할 / JR 도카이 관할 ▼</td></tr>';
+            var data = await fetch('https://api.hyeonjs.com/subway?region=jre&line=1001').then((response) => response.json());
+            src += createMap(data);
+            
+            src += '<tr><td colspan=5 class=split>▲ JR 동일본 관할 | JR 도카이 관할 ▼</td></tr>';
             data = await fetch('https://api.hyeonjs.com/subway?region=jrc&line=1001').then((response) => response.json());
             src += createMap(data);
 
-            src += '<tr><td colspan=5 class=split>▲ JR 도카이 관할 / JR 서일본 관할 ▼</td></tr>';
+            src += '<tr><td colspan=5 class=split>▲ JR 도카이 관할 | JR 서일본 관할 ▼</td></tr>';
             data = await fetch('https://api.hyeonjs.com/subway?region=jrw&line=1001').then((response) => response.json());
             src += createMap(data);
+
+            src += '<tr><td colspan=5 class=split>▼ JR 서일본 산요 본선</td></tr>';
 
             document.getElementById("subway_map").innerHTML = src;
         }
